@@ -1,0 +1,77 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using DotnetCore.Model_folder;
+using System.Linq;
+
+namespace DotnetCore.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class StudentsController : ControllerBase
+    {
+        List<Student> objstudents = new List<Student>()
+        {
+            new Student() { Id = 1, StudentName="Gokul", Gender= "Male", Age =22 , Address="Pondicherry" },
+            new Student() { Id = 2, StudentName="Gowri", Gender= "female", Age =30 , Address="Pondicherry" },
+            new Student() { Id = 3, StudentName="Praveen", Gender= "Male", Age =22 , Address="Bangalore" },
+            new Student() { Id = 4, StudentName="Govind", Gender= "Male", Age =18 , Address="Tamilnadu" },
+            //new Student() { Mark = 80,Name = "Gokul", Subject = "Maths"},
+            //new Student() { Mark = 89,Name = "Govind", Subject = "Maths"}
+        };
+
+        List<StudentsMarks> obj = new List<StudentsMarks>()
+        {
+            new StudentsMarks() { Id = 1, PhysicsMark=81, MathsMark=90, ChemistryMark=79, CSMark=92},
+            new StudentsMarks() { Id = 2, PhysicsMark=79, MathsMark=98, ChemistryMark=83, CSMark=89},
+            new StudentsMarks() { Id = 3 ,PhysicsMark=75, MathsMark=85, ChemistryMark=89, CSMark=93},
+            new StudentsMarks() { Id = 4 ,PhysicsMark=85, MathsMark=82, ChemistryMark=84, CSMark=90}
+        };
+
+        [HttpGet]
+        [Route("GetAllData")]
+        public IActionResult GetAllData()
+        {
+            //var combined = objstudents.Union(obj);
+            if (objstudents.Count == 0)
+            {
+                return NotFound("No Data Found");
+            }
+            return Ok(objstudents);
+        }
+
+        [HttpGet]
+        [Route("GetAllMarks")]
+        public IActionResult GetAllMarks()
+        {
+            if (obj.Count == 0)
+            {
+                return NotFound("No Data Found");
+            }
+            return Ok(obj);
+        }
+
+        [HttpGet]
+        [Route("GetByID")]
+        public IActionResult GetByID(int Id)
+        {
+            var studentDataByid = objstudents.Find(x => x.Id == Id);
+            if (studentDataByid == null)
+            {
+                return BadRequest("No Data Found");
+            }
+            return Ok(studentDataByid);
+        }
+
+        [HttpGet]
+        [Route("GetMarksByID")]
+        public IActionResult GetMarksByID(int Id)
+        {
+            var studentDataByid = obj.Find(x => x.Id == Id);
+            if (studentDataByid == null)
+            {
+                return BadRequest("No Data Found");
+            }
+            return Ok(studentDataByid);
+        }
+    }
+}
